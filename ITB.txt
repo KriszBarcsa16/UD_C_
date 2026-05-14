@@ -1,0 +1,99 @@
+1.
+K: Készítsen önaláírt tanúsítványt a self.my-business.eu (CN) részére és mentse a következő állományba: /root/self.my-business.eu.crt.
+
+V:openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/self.my-business.eu.key -out /root/self.my-business.eu.crt -subj "/CN=self.my-business.eu
+
+2.
+K:Hozzáférés eltávolítása
+
+V:setfacl -b PATH  chmod 000 PATH
+
+3.
+K:Fiók lejárati dátum
+
+V:usermod -e 2025-01-01 USER
+
+4.
+K:ACL olvasási jog
+
+V:setfacl -m u:operator:r PATH
+
+5.
+K:Új felhasználó
+
+V: useradd USER
+   usermod -L USER
+
+6.
+K:Fájl tulajdonosság
+
+V:chown USER PATH
+
+7.
+K:SHA-256 aláírás
+
+V: openssl dgst -sha256 -sign /root/priv.key -out /root/198794.sign /root/198794.txt
+
+8.
+K:Nem root tulaj,absz elérési út
+
+V:find /root/198795 ! -user root > /root/198795.ans
+
+9.
+K:Adott bájtméretű fájl
+
+V:dd if=/dev/zero of=/root/198798.dat bs=1 count=198798
+
+10.
+K:Másold a /root/160067.dat fájl első 70 bájtját a /root/160067.part fájlba
+
+V:dd if=/root/160067.dat of=/root/160067.part bs=1 count=70
+
+11.
+K:Sticky bit megkeresés
+
+V:find /root/valami/ -perm /1000 > /root/valasz
+
+12.
+K: Fejtsd vissza a /root/86261.enc fájlt az aes-128-cbc algoritmus használatával. Használd a 86261 értéket kulcsként (key) és a 0 értéket inicializációs vektorként (IV). Az eredményt mentsd el a /root/86261.txt fájlba.
+
+V: openssl aes-128-cbc -d -in /root/86261.enc -K 86261 -iv 0 > /root/86261.txt
+
+13.
+K:Új user + SSH kulcs
+ 
+V:useradd -m user160184
+su - user160184 -c "ssh-keygen -t rsa -N '' -f /home/user160184/.ssh/id_rsa"
+cat /home/user160184/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+chmod 600 /root/.ssh/authorized_keys
+
+14.
+K:Jelszó max élettartam(pl 100 nap)
+
+V: chage -M 100 operator
+chage -d 0 operator
+
+15.
+K:Összes ACL törlése
+
+V:setfacl -b PATH
+
+16.
+K:RSA priv kulcs 512 bit,PKCS8
+
+V: openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:512 -out /root/198797.pem
+
+17.
+K: új partíció +ext2+ readonly
+V: fdisk /dev/sdc
+# n, p, 1, Enter, Enter, w
+mkfs.ext2 /dev/sdc1
+mount -o ro /dev/sdc1 /mnt
+
+18.
+K: Readonly mindenkinek:
+
+V: chmod 444 PATH
+
+19.
+K: 
